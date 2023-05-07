@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Task Management Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+  <!-- Include Chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Link to styles.css file -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Task Management Dashboard</h1>
+
+  <form>
+    <label for="file">Upload a task spreadsheet:</label>
+    <input type="file" id="file" accept=".xlsx">
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="chart-container">
+    <canvas id="chart"></canvas>
+  </div>
+
+  <div id="task-list">
+    <h2>Task List</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Task Number</th>
+          <th>Task Name</th>
+          <th>Owner</th>
+          <th>Doer</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="task-table">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Link to sheet.js file
+  <script src="sheet.js"></script> -->
+
+  <!-- Link to script.js file -->
+  <script src="script.js"></script>
+
+  <!-- Link to chart.js file -->
+  <script src="chart.js"></script>
+
+  <!-- Include nodemailer library -->
+  <script src="https://cdn.jsdelivr.net/npm/nodemailer@6.6.3/lib/nodemailer.js"></script>
+
+  <script>
+    // Function to send email
+    function sendEmail() {
+      // Create a Nodemailer transporter object
+      let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'your_email@gmail.com',
+          pass: 'your_email_password'
+        }
+      });
+
+      // Set up email data
+      let mailOptions = {
+        from: 'your_email@gmail.com',
+        to: 'recipient_email@gmail.com',
+        subject: 'Task Management Dashboard Status',
+        text: 'Please find the attached spreadsheet and pie chart of task status.',
+        attachments: [{
+          filename: 'task_data.xlsx',
+          path: 'data/task_data.xlsx'
+        }, {
+          filename: 'pie_chart.png',
+          path: 'data/pie_chart.png'
+        }]
+      };
+
+      // Send email with specified transport object
+      transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+    }
+  </script>
+
+  <button onclick="sendEmail()">Send Email</button>
+</body>
+</html>
+
